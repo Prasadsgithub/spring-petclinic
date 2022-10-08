@@ -23,4 +23,5 @@ pipeline {
                 junit testresults: '**/surefire-reports/*.xml'
             }
         }
+    }
 }
