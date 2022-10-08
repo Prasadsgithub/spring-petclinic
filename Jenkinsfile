@@ -13,11 +13,13 @@ pipeline {
             steps {
                 git url: 'https://github.com/Prasadsgithub/spring-petclinic.git'
                 branch: 'features'
-            } 
+            }    
+        }
         stage('Build the code') {
             steps {
                 sh: 'mvn clean package'
             }
+        }    
         stage('reporting') {
             steps {
                 junit testresults: '**/surefire-reports/*.xml'
