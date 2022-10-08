@@ -5,7 +5,7 @@ pipeline {
         retry(3)
     }
     triggers {
-        cron('H * * * *)
+        cron('H * * * *')
         pollSCM('* * * * *')
     }
     stages {
