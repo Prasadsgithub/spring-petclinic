@@ -1,11 +1,9 @@
 pipeline {
-    agent { label 'JDK11'}
+    agent { label 'JDK8-GOL'}
     options {
         timeout(time: 1, unit: 'HOURS')
-        retry(3)
     }
     triggers {
-        cron('H * * * *')
         pollSCM('* * * * *')
     }
     stages {
@@ -13,16 +11,18 @@ pipeline {
             steps {
                 git url: 'https://github.com/Prasadsgithub/spring-petclinic.git', 
                 branch: 'features'
-            }    
+            }   
         }
-        stage('Build the code') {
+        stage('Build the code and sonarqube analysis') {
             steps {
-                sh script: 'mvn clean package'
+                withSonarQubeEnv('SONAR_LATEST') {
+                    sh 'mvn clean package sonar:sonar'
+                }   
             }
-        }    
+        }  
         stage('reporting') {
             steps {
-                junit testResults: 'target/surefire-reports/*.xml'
+                junit testResults: '**/surefire-reports/*.xml'
             }
         }
     }
