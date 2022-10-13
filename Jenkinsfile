@@ -13,11 +13,13 @@ pipeline {
                 branch: 'sprint_1_dev'
             }   
         }
-        stage('Build the code ') {
+        stage('Build the Code and sonarqube-analysis') {
             steps {
-                sh 'mvn clean package'   
+                withSonarQubeEnv('SONAR_LATEST') {
+                    sh script: "mvn clean package sonar:sonar"
+                }
             }
-        }  
+        }
         stage('reporting') {
             steps {
                 junit testResults: '**/surefire-reports/*.xml'
