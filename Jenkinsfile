@@ -1,6 +1,8 @@
 pipeline {
     agent {label 'NODE1'}
-    
+        options {
+        timeout(time: 1, unit: 'HOURS')
+    }
     triggers {
         pollSCM '* * * * *'
     }
@@ -16,5 +18,10 @@ pipeline {
                 sh "mvn package"
             }
         }
+    stage('reporting test reports') {
+            steps {
+                junit testResults: '**/surefire-reports/*.xml'
+            }
+       }
     }
 }
